@@ -30,37 +30,39 @@ namespace M120Projekt
         #region Demo
         private void DemoErstellen()
         {
-            // ClassB (kurze Syntax)
-            DAL.ClassB classB1 = new DAL.ClassB{ TextAttribut = "Kategorie 1", BooleanAttribut = true, DatumAttribut = DateTime.Today};
-            Int64 classB1Id = BLL.ClassB.Erstellen(classB1);
-            Debug.Print("Kategorie erstellt mit Id:" + classB1Id);
-            DAL.ClassB classB2 = new DAL.ClassB { TextAttribut = "Kategorie 2", BooleanAttribut = true, DatumAttribut = DateTime.Today };
-            Int64 classB2Id = BLL.ClassB.Erstellen(classB2);
-            Debug.Print("Kategorie erstellt mit Id:" + classB2Id);
-            // ClassA (detaillierte Syntax)
-            DAL.ClassA classA1 = new DAL.ClassA();
-            classA1.TextAttribut = "Kunde 1";
-            classA1.DatumAttribut = DateTime.Today;
-            classA1.FremdschluesselAttribut = classB1;
-            Int64 classA1Id = BLL.ClassA.Erstellen(classA1);
-            Debug.Print("Kunde erstellt mit Id:" + classA1Id);
+            // Kategorie (kurze Syntax)
+            DAL.Kategorie kategorie1 = new DAL.Kategorie{ Name = "Kategorie 1"};
+            Int64 kategorie1Id = BLL.Kategorie.Erstellen(kategorie1);
+            Debug.Print("Kategorie erstellt mit Id:" + kategorie1Id);
+            DAL.Kategorie kategorie2 = new DAL.Kategorie { Name = "Kategorie 2"};
+            Int64 kategorie2Id = BLL.Kategorie.Erstellen(kategorie2);
+            Debug.Print("Kategorie erstellt mit Id:" + kategorie2Id);
+            // Passwort (detaillierte Syntax)
+            DAL.Passwort passwort1 = new DAL.Passwort();
+            passwort1.Login = "vmadmin";
+            passwort1.PSW = "gibbiX12345";
+            passwort1.Eingabedatum = DateTime.Today;
+            passwort1.Ablaufdatum = DateTime.Today.AddMonths(1);
+            passwort1.Kategorie = kategorie1;
+            Int64 passwort1Id = BLL.Passwort.Erstellen(passwort1);
+            Debug.Print("Passwort erstellt mit Id:" + passwort1Id);
         }
         private void DemoAbfragen()
         {
             String output = "";
-            // Alle Records ClassA mit Details zu verknüpftem Record aus ClassB
-            output += Environment.NewLine + "Alle Records ClassA";
-            foreach (DAL.ClassA classA in BLL.ClassA.LesenAlle())
+            // Alle Records Passwort mit Details zu verknüpftem Record aus Kategorie
+            output += Environment.NewLine + "Alle Records Passwort";
+            foreach (DAL.Passwort classA in BLL.Passwort.LesenAlle())
             {
-                output += Environment.NewLine + "TextAttribut ClassA:" + classA.TextAttribut;
-                output += Environment.NewLine + "TextAttribut ClassB:" + classA.FremdschluesselAttribut.TextAttribut;
+                output += Environment.NewLine + "Passwort Login:" + classA.Login;
+                output += Environment.NewLine + "Passwort Kategorie Name:" + classA.Kategorie.Name;
             }
             output += Environment.NewLine + "------------------------------------------------------";
-            // Alle Records ClassB
-            output += Environment.NewLine + "Alle Records ClassB";
-            foreach (DAL.ClassB classB in BLL.ClassB.LesenAlle())
+            // Alle Records Kategorie
+            output += Environment.NewLine + "Alle Records Kategorie";
+            foreach (DAL.Kategorie classB in BLL.Kategorie.LesenAlle())
             {
-                output += Environment.NewLine + "TextAttribut ClassB:" + classB.TextAttribut;
+                output += Environment.NewLine + "Kategorie Name:" + classB.Name;
             }
             output += Environment.NewLine + "------------------------------------------------------";
             Debug.Print(output);

@@ -69,10 +69,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BLL\ClassA.cs" />
-    <Compile Include="BLL\ClassB.cs" />
-    <Compile Include="DAL\ClassA.cs" />
-    <Compile Include="DAL\ClassB.cs" />
+    <Compile Include="BLL\Passwort.cs" />
+    <Compile Include="BLL\Kategorie.cs" />
+    <Compile Include="DAL\Passwort.cs" />
+    <Compile Include="DAL\Kategorie.cs" />
     <Compile Include="DAL\Context.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
