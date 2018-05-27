@@ -24,8 +24,12 @@ namespace M120Projekt
         public MainWindow()
         {
             InitializeComponent();
-            DemoErstellen();
+            if(BLL.Passwort.LesenAlle().Count == 0 && BLL.Kategorie.LesenAlle().Count == 0)
+            {
+                DemoErstellen();
+            }
             DemoAbfragen();
+            initalize();
         }
         #region Demo
         private void DemoErstellen()
@@ -68,5 +72,30 @@ namespace M120Projekt
             Debug.Print(output);
         }
         #endregion
+
+        private void initalize()
+        {
+            ListKateorie.Children.Add(new UC_KategorieList(this));
+            MainTitle.Background = Brushes.Gray;
+        }
+
+        private void UC_KategorieList_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public void LoadPasswordListView(DAL.Kategorie kategorie)
+        {
+            MainTitle.Content = "Password List";
+            this.mainShowPlace.Children.Clear();
+            this.mainShowPlace.Children.Add(new UC_PasswordListView(this, kategorie));
+        }
+
+        public void LoadView(UIElement view, string title)
+        {
+            MainTitle.Content = title;
+            this.mainShowPlace.Children.Clear();
+            this.mainShowPlace.Children.Add(view);
+        }
     }
 }

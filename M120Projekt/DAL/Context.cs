@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace M120Projekt.DAL
 {
-    class Context : DbContext
+    public class Context : DbContext
     {
         public Context() : base("name=M120Connectionstring")
         {

@@ -40,7 +40,7 @@ namespace M120Projekt.BLL
         {
             using (var context = new DAL.Context())
             {
-                return (from record in context.Passwort.Include("Kategorie") where record.Kategorie == suchschluessel select record).ToList();
+                return (from record in context.Passwort.Include("Kategorie") where record.Kategorie.KategorieId == suchschluessel.KategorieId select record).ToList();
             }
         }
         public static Int64 Erstellen(DAL.Passwort passwort)

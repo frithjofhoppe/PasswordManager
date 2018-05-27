@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace M120Projekt.DAL
 {
-    class Passwort
+    public class Passwort
     {
         public Passwort() { }
         [Key]
