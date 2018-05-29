@@ -62,6 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additonal\EntityStatus.cs" />
+    <Compile Include="Additonal\RegexLib.cs" />
     <Compile Include="Additonal\WorkingStatus.cs" />
     <Compile Include="UC_KategorieList.xaml.cs">
       <DependentUpon>UC_KategorieList.xaml</DependentUpon>
@@ -143,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Ressource\Image\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressource\Image\hide.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

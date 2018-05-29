@@ -26,6 +26,9 @@ namespace M120Projekt
         WorkingStatus workingStatus;
         MainWindow parent;
         DAL.Passwort currentPassword;
+        bool isPasswordVisible = false;
+        PasswordBox charedBox;
+        TextBox clearBox;
         public UC_Password()
         {
             InitializeComponent();
@@ -38,6 +41,7 @@ namespace M120Projekt
             this.workingStatus = workingStatus;
             this.entityStatus = EntityStatus.UNATTACHED;
             Initialize();
+            LoadValues(currentPassword);
         }
 
         public UC_Password(MainWindow parent, DAL.Passwort password, WorkingStatus workingStatus)
@@ -45,7 +49,7 @@ namespace M120Projekt
             InitializeComponent();
             this.parent = parent;
             this.workingStatus = workingStatus;
-            this.entityStatus = EntityStatus.UNCHANGED;
+            this.entityStatus = EntityStatus.MODIFIED;
             this.currentPassword = password;
             LoadValues(currentPassword);
             Initialize();
@@ -56,35 +60,45 @@ namespace M120Projekt
             CMBCategory.ItemsSource = BLL.Kategorie.LesenAlle();
             CMBCategory.DisplayMemberPath = "Name";
             CMBCategory.SelectedValuePath = "KategorieId";
+            charedBox = TXTPasswordChared;
+            clearBox = TXTPasswordClear;
 
             switch (workingStatus)
             {
                 case WorkingStatus.NEW: InitalizeNewStatus(); break;
                 case WorkingStatus.LOADED: InitalizeLoadedStatus(); break;
             }
+
+            PNLPasswordField.Children.Clear();
+            PNLPasswordField.Children.Add(charedBox);
+            TXTPasswordChared.IsEnabled = false;
+            clearBox.Text = currentPassword.PSW;
+            charedBox.Password = currentPassword.PSW;
         }
 
         private void InitalizeNewStatus()
         {
-            DATECreationDate.IsEnabled = false;
-            DATECreationDate.SelectedDate = DateTime.Now;
-            DATECreationDate.DisplayDateStart = DateTime.Now;
-            DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
-            DATEExpirationDate.SelectedDate = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
+
             currentPassword = new DAL.Passwort()
             {
-                Kategorie = null,
-                Eingabedatum = DATECreationDate.SelectedDate.Value,
-                Ablaufdatum = DATEExpirationDate.SelectedDate.Value,
+                Kategorie = BLL.Kategorie.LesenAlle()[0],
+                Eingabedatum = DateTime.Now,
+                Ablaufdatum = DateTime.Now.AddDays(1),
                 PSW = "",
                 Zielsystem = "",
                 Login = "",
             };
+
+            DATECreationDate.IsEnabled = false;
+            //DATECreationDate.SelectedDate = currentPassword.Eingabedatum;
+            //DATECreationDate.DisplayDateStart = currentPassword.Eingabedatum;
+            //DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
+            //DATEExpirationDate.SelectedDate = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
         }
 
         private void InitalizeLoadedStatus()
         {
-            CMBCategory.IsEnabled = false;
+            CMBCategory.IsEnabled = true;
             DATECreationDate.IsEnabled = false;
             DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
         }
@@ -95,8 +109,28 @@ namespace M120Projekt
             DATECreationDate.SelectedDate = pw.Eingabedatum;
             DATEExpirationDate.SelectedDate = pw.Ablaufdatum;
             CMBCategory.SelectedValue = pw.Kategorie.KategorieId;
-            TXTPassword.Text = pw.PSW;
+            TXTPasswordClear.Text = pw.PSW;
             TXTUsername.Text = pw.Login;
+        }
+
+        private void setPasswordVisibility(bool status)
+        {
+            if (status)
+            {
+                currentPassword.PSW = charedBox.Password;
+                clearBox.Text = currentPassword.PSW;
+                PNLPasswordField.Children.Clear();
+                PNLPasswordField.Children.Add(clearBox);
+            }
+            else
+            {
+                currentPassword.PSW = clearBox.Text;
+                charedBox.Password = currentPassword.PSW;
+                charedBox.Background = clearBox.Background;
+                PNLPasswordField.Children.Clear();
+                PNLPasswordField.Children.Add(charedBox);
+            }
+
         }
 
         public UC_Password(MainWindow parent, DAL.Passwort passwort)
@@ -116,12 +150,37 @@ namespace M120Projekt
 
         private void BTNSave_Click(object sender, RoutedEventArgs e)
         {
-
+            if (entityStatus == EntityStatus.MODIFIED)
+            {
+                BLL.Passwort.Aktualisieren(currentPassword);
+                MessageBox.Show("The password ahs been update", "Updated", MessageBoxButton.OK, MessageBoxImage.Information);
+                currentPassword = BLL.Passwort.LesenID(currentPassword.PasswortId);
+            }
+            if (entityStatus == EntityStatus.UNATTACHED)
+            {
+                long id = BLL.Passwort.Erstellen(currentPassword);
+                if (id > 0)
+                {
+                    MessageBox.Show("The password has been created", "Created", MessageBoxButton.OK, MessageBoxImage.Information);
+                    currentPassword = BLL.Passwort.LesenID(id);
+                    LoadValues(currentPassword);
+                    entityStatus = EntityStatus.MODIFIED;
+                }
+            }
         }
 
         private void BTNDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            if(entityStatus == EntityStatus.MODIFIED)
+            {
+                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(mbr == MessageBoxResult.Yes)
+                {
+                    BLL.Passwort.LoeschenById(currentPassword.PasswortId);
+                    MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
+                }
+            }
         }
 
         private void DATECreationDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -136,6 +195,45 @@ namespace M120Projekt
                 DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
             }
         }
+
+        private void BTNChangePasswordMode_Click(object sender, RoutedEventArgs e)
+        {
+            setPasswordVisibility(!isPasswordVisible);
+            isPasswordVisible = !isPasswordVisible;
+        }
+
+        private void TXTName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RegexLib.Match(RegexLib.IsNameValid, ((TextBox)sender).Text, ((TextBox)sender));
+            currentPassword.Zielsystem = TXTName.Text;
+        }
+
+        private void TXTUsername_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RegexLib.Match(RegexLib.IsNameValid, ((TextBox)sender).Text, ((TextBox)sender));
+            currentPassword.Login = TXTUsername.Text;
+        }
+
+        private void TXTPasswordClear_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RegexLib.Match(RegexLib.IsPasswordValid, ((TextBox)sender).Text, ((TextBox)sender));
+            currentPassword.PSW = TXTPasswordClear.Text;
+        }
+
+        private void TXTPasswordChared_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void DATEExpirationDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentPassword.Ablaufdatum = DATEExpirationDate.SelectedDate.Value;
+        }
+
+        private void CMBCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentPassword.Kategorie = (DAL.Kategorie)CMBCategory.SelectedItem;
+        }
     }
 
     public class WidthConverter : IValueConverter
@@ -144,7 +242,7 @@ namespace M120Projekt
         {
             var valueToConvert = Double.Parse(value.ToString());
             var factor = Int32.Parse(parameter.ToString());
-            return valueToConvert * (factor/10);
+            return valueToConvert * (factor / 10);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -67,6 +67,20 @@ namespace M120Projekt.BLL
                 context.SaveChanges();
             }
         }
+
+        public static void LoeschenById(long id)
+        {
+            using(var context = new DAL.Context())
+            {
+                var pw = context.Passwort.FirstOrDefault(i => i.PasswortId == id);
+                if(pw != null)
+                {
+                    context.Passwort.Remove(pw);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public static void Loeschen(DAL.Passwort passwort)
         {
             using (var context = new DAL.Context())
