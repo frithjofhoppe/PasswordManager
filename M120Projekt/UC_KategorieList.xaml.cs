@@ -48,5 +48,20 @@ namespace M120Projekt
             DAL.Kategorie kategorie = (DAL.Kategorie)(((DataGrid)sender).SelectedItem);
             parent.LoadPasswordListView(kategorie);
         }
+
+        private void BTNAdd_Click(object sender, RoutedEventArgs e)
+        {
+            parent.LoadView(new UC_Category(parent), "New category");
+        }
+
+        private void BTNDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BTNEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

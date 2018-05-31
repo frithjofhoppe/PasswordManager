@@ -17,6 +17,23 @@ namespace M120Projekt.Additonal
             return false;
         }
 
+        public static bool IsCategoryValid(string input)
+        {
+            bool toReturn = false;
+            if (Regex.IsMatch(input, @"^[a-zA-Z0-9]{3}[a-zA-Z0-9\s]*$"))
+            {
+                toReturn = true;
+            }
+            else
+            {
+                toReturn = false;
+            }
+
+            var category = BLL.Kategorie.LesenAlle().FirstOrDefault(i => i.Name.Trim().ToLower() == input.Trim().ToLower());
+
+            return category == null && toReturn;
+        }
+
         public static bool IsPasswordValid(string input)
         {
             if (Regex.IsMatch(input, @"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$")) return true;

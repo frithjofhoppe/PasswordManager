@@ -48,11 +48,19 @@ namespace M120Projekt
         {
             InitializeComponent();
             this.parent = parent;
-            this.workingStatus = workingStatus;
-            this.entityStatus = EntityStatus.MODIFIED;
+            this.workingStatus = password == null ? WorkingStatus.NEW : workingStatus;
+            this.entityStatus = password == null ? EntityStatus.UNATTACHED : EntityStatus.MODIFIED;
             this.currentPassword = password;
-            LoadValues(currentPassword);
-            Initialize();
+            if (password == null)
+            {
+                Initialize();
+                LoadValues(currentPassword);
+            }
+            else
+            {
+                LoadValues(currentPassword);
+                Initialize();
+            }
         }
 
         private void Initialize()
@@ -90,10 +98,6 @@ namespace M120Projekt
             };
 
             DATECreationDate.IsEnabled = false;
-            //DATECreationDate.SelectedDate = currentPassword.Eingabedatum;
-            //DATECreationDate.DisplayDateStart = currentPassword.Eingabedatum;
-            //DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
-            //DATEExpirationDate.SelectedDate = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
         }
 
         private void InitalizeLoadedStatus()
@@ -150,36 +154,50 @@ namespace M120Projekt
 
         private void BTNSave_Click(object sender, RoutedEventArgs e)
         {
-            if (entityStatus == EntityStatus.MODIFIED)
+            if (IsSelectionValid())
             {
-                BLL.Passwort.Aktualisieren(currentPassword);
-                MessageBox.Show("The password ahs been update", "Updated", MessageBoxButton.OK, MessageBoxImage.Information);
-                currentPassword = BLL.Passwort.LesenID(currentPassword.PasswortId);
-            }
-            if (entityStatus == EntityStatus.UNATTACHED)
-            {
-                long id = BLL.Passwort.Erstellen(currentPassword);
-                if (id > 0)
+                if (entityStatus == EntityStatus.MODIFIED)
                 {
-                    MessageBox.Show("The password has been created", "Created", MessageBoxButton.OK, MessageBoxImage.Information);
-                    currentPassword = BLL.Passwort.LesenID(id);
-                    LoadValues(currentPassword);
-                    entityStatus = EntityStatus.MODIFIED;
+                    BLL.Passwort.Aktualisieren(currentPassword);
+                    MessageBox.Show("The password has been update", "Updated", MessageBoxButton.OK, MessageBoxImage.Information);
+                    currentPassword = BLL.Passwort.LesenID(currentPassword.PasswortId);
                 }
+                if (entityStatus == EntityStatus.UNATTACHED)
+                {
+                    long id = BLL.Passwort.Erstellen(currentPassword);
+                    if (id > 0)
+                    {
+                        MessageBox.Show("The password has been created", "Created", MessageBoxButton.OK, MessageBoxImage.Information);
+                        currentPassword = BLL.Passwort.LesenID(id);
+                        LoadValues(currentPassword);
+                        entityStatus = EntityStatus.MODIFIED;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please check the data", "Incorrect values", MessageBoxButton.OK, MessageBoxImage.Stop);
             }
         }
 
         private void BTNDelete_Click(object sender, RoutedEventArgs e)
         {
-            if(entityStatus == EntityStatus.MODIFIED)
+            if (IsSelectionValid())
             {
-                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if(mbr == MessageBoxResult.Yes)
+                if (entityStatus == EntityStatus.MODIFIED)
                 {
-                    BLL.Passwort.LoeschenById(currentPassword.PasswortId);
-                    MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
-                    parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
+                    MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (mbr == MessageBoxResult.Yes)
+                    {
+                        BLL.Passwort.LoeschenById(currentPassword.PasswortId);
+                        MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                        parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please check the data", "Incorrect values", MessageBoxButton.OK, MessageBoxImage.Stop);
             }
         }
 
@@ -233,6 +251,13 @@ namespace M120Projekt
         private void CMBCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentPassword.Kategorie = (DAL.Kategorie)CMBCategory.SelectedItem;
+        }
+
+        private bool IsSelectionValid()
+        {
+            return
+                RegexLib.Match(RegexLib.IsNameValid, TXTName.Text, TXTName) &&
+                RegexLib.Match(RegexLib.IsPasswordValid, TXTPasswordClear.Text, TXTPasswordClear);
         }
     }
 

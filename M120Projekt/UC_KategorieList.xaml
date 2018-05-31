@@ -7,10 +7,27 @@
              mc:Ignorable="d" 
              >
     <Grid Background="LightGray">
-    <DataGrid Grid.Column="0" VerticalScrollBarVisibility="Auto"  MouseDoubleClick="ListKategorie_MouseDoubleClick" x:Name="ListKategorie" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFEDEDED">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" VerticalScrollBarVisibility="Auto"  MouseDoubleClick="ListKategorie_MouseDoubleClick" x:Name="ListKategorie" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFEDEDED">
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True" Binding="{Binding Name}" Header="Category" Width="*"/>
         </DataGrid.Columns>
     </DataGrid>
+        <Grid Grid.Row="1">
+            <ToolBar Grid.Column="0" Grid.Row="0">
+                <Button Click="BTNAdd_Click" Name="BTNAdd" ToolBar.OverflowMode="Never" >
+                    <Image Source="Ressource/Image/add.png"/>
+                </Button>
+                <Button Click="BTNDelete_Click" Name="BTNDelete"  ToolBar.OverflowMode="Never">
+                    <Image Source="Ressource/Image/delete.png"/>
+                </Button>
+                <Button Click="BTNEdit_Click" Name="BTNEdit"  ToolBar.OverflowMode="Never">
+                    <Image Source="Ressource/Image/edit.png"/>
+                </Button>
+            </ToolBar>
+        </Grid>
     </Grid>
 </UserControl>

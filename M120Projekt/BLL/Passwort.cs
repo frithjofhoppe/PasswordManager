@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace M120Projekt.BLL
 {
@@ -66,6 +67,24 @@ namespace M120Projekt.BLL
                 context.Entry(passwort).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
             }
+
+            using (var context = new DAL.Context())
+            {
+                var password = context.Passwort
+                    .Include(i => i.Kategorie)
+                    .FirstOrDefault(i => i.PasswortId == passwort.PasswortId);
+
+                var category = context.Kategorie
+                    .FirstOrDefault(i => i.KategorieId == passwort.Kategorie.KategorieId);
+
+                if (category != null)
+                {
+                    context.Entry(password.Kategorie).State = EntityState.Modified;
+                    context.Entry(password).State = EntityState.Modified;
+                    password.Kategorie = category;
+                    context.SaveChanges();
+                }
+            }
         }
 
         public static void LoeschenById(long id)
@@ -85,6 +104,7 @@ namespace M120Projekt.BLL
         {
             using (var context = new DAL.Context())
             {
+                context.Entry(passwort).State = System.Data.Entity.EntityState.Unchanged;
                 context.Passwort.Remove(passwort);
                 context.SaveChanges();
             }

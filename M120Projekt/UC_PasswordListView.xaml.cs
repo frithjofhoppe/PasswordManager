@@ -22,6 +22,7 @@ namespace M120Projekt
     {
         MainWindow parent;
         DAL.Passwort currentPassword;
+        DAL.Kategorie currentCategory;
         public UC_PasswordListView(MainWindow parent)
         {
             InitializeComponent();
@@ -33,6 +34,7 @@ namespace M120Projekt
         {
             InitializeComponent();
             this.parent = parent;
+            this.currentCategory = kategorie;
             LoadView(kategorie);
             initialize();
         }
@@ -71,7 +73,13 @@ namespace M120Projekt
         {
             if(currentPassword != null)
             {
-                MessageBox.Show("Delete");
+                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (mbr == MessageBoxResult.Yes)
+                {
+                    BLL.Passwort.LoeschenById(currentPassword.PasswortId);
+                    MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    parent.LoadView(new UC_PasswordListView(parent, currentCategory), "New password");
+                }
             }
         }
     }
