@@ -19,6 +19,30 @@ namespace M120Projekt.BLL
             }
         }
 
+        public static List<DAL.Passwort> ZielsystemWie(string searchTerm, long categoryid)
+        {
+            using (var context = new DAL.Context())
+            {
+                return context.Passwort
+                    .Include(i => i.Kategorie)
+                    .Where(i => i.Kategorie.KategorieId == categoryid)
+                    .Where(i => i.Zielsystem.ToLower().Contains(searchTerm.ToLower()))
+                    .ToList();
+            }
+        }
+
+        public static List<DAL.Passwort> BenutzerWie(string searchTerm, long categoryid)
+        {
+            using (var context = new DAL.Context())
+            {
+                return context.Passwort
+                    .Include(i => i.Kategorie)
+                    .Where(i => i.Kategorie.KategorieId == categoryid)
+                    .Where(i => i.Login.ToLower().Contains(searchTerm.ToLower()))
+                    .ToList();
+            }
+        }
+
         public static List<DAL.Passwort> LesenAlleAbgelaufen()
         {
             using (var context = new DAL.Context())

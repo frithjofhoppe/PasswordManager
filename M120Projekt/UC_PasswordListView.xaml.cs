@@ -41,7 +41,10 @@ namespace M120Projekt
 
         private void initialize()
         {
-            //BTNDelete.Visibility = Visibility.Hidden;
+            CMBSeachCategory.ItemsSource = new List<string>() {
+                "Identifier",
+                "Username"
+            };
         }
 
         private void LoadView(DAL.Kategorie kategorie)
@@ -80,6 +83,25 @@ namespace M120Projekt
                     MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
                     parent.LoadView(new UC_PasswordListView(parent, currentCategory), "New password");
                 }
+            }
+        }
+
+        private void TXTSearchTerm_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(CMBSeachCategory.SelectedIndex > -1 && TXTSearchTerm.Text.Trim().Length != 0)
+            {
+                var item = (string)CMBSeachCategory.SelectedItem;
+                var searchTerm = TXTSearchTerm.Text.Trim();
+
+                switch (item)
+                {
+                    case "Identifier": ListPasswords.ItemsSource = BLL.Passwort.ZielsystemWie(searchTerm, currentCategory.KategorieId) ; break;
+                    case "Username": ListPasswords.ItemsSource = BLL.Passwort.BenutzerWie(searchTerm, currentCategory.KategorieId); break;
+                }
+            }
+            else if(TXTSearchTerm.Text.Trim().Length == 0)
+            {
+                ListPasswords.ItemsSource = BLL.Passwort.LesenFremdschluesselGleich(currentCategory);
             }
         }
     }
