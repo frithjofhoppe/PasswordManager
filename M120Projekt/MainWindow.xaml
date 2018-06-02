@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:M120Projekt"
         mc:Ignorable="d"
         Icon="Ressource/Image/logoico.ico"
-        Title="Password manager" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Password manager" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -25,7 +26,7 @@
                         <MenuItem Header="_Startpage" Name="MenuStartpage" Click="MenuStartpage_Click"/>
                         <MenuItem Header="_About" />
                         <Separator />
-                        <MenuItem Header="_Exit" />
+                        <MenuItem Header="_Exit" Name="MenutExit" Click="MenutExit_Click"/>
                     </MenuItem>
                 </Menu>
             </Grid>
