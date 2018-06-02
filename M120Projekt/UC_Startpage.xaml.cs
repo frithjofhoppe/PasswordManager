@@ -45,7 +45,7 @@ namespace M120Projekt
 
             if (status > 0)
             {
-                var text = status > 1 ? " passwords" : " password";
+                var text = status > 1 ? " passwords have" : " password has";
                 text += " expired";
                 TXTStatus.Content = status.ToString() + text;
                 bi3.UriSource = new Uri("Ressource/Image/warning.png", UriKind.Relative);
@@ -54,7 +54,7 @@ namespace M120Projekt
             }
             else
             {
-                TXTStatus.Content = "No password expired";
+                TXTStatus.Content = "No password has expired";
                 bi3.UriSource = new Uri("Ressource/Image/success.png", UriKind.Relative);
                 bi3.EndInit();
                 IMGStatus.Source = bi3;

@@ -250,6 +250,14 @@ namespace M120Projekt
         private void DATEExpirationDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             currentPassword.Ablaufdatum = DATEExpirationDate.SelectedDate.Value;
+            if(DATEExpirationDate.SelectedDate.Value.Date <= DateTime.Today)
+            {
+                DATEExpirationDate.Background = Brushes.Red;
+            }
+            else
+            {
+                DATEExpirationDate.Background = Brushes.Green;
+            }
         }
 
         private void CMBCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -261,7 +269,8 @@ namespace M120Projekt
         {
             return
                 RegexLib.Match(RegexLib.IsNameValid, TXTName.Text, TXTName) &&
-                RegexLib.Match(RegexLib.IsPasswordValid, TXTPasswordClear.Text, TXTPasswordClear);
+                RegexLib.Match(RegexLib.IsPasswordValid, TXTPasswordClear.Text, TXTPasswordClear) &&
+                DATEExpirationDate.SelectedDate.Value.Date > DateTime.Today;
         }
     }
 
