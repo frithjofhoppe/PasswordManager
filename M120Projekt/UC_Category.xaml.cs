@@ -23,6 +23,7 @@ namespace M120Projekt
     {
         MainWindow parent;
         DAL.Kategorie category;
+        string PreName;
         WorkingStatus workingStatus;
         EntityStatus entityStatus;
 
@@ -46,6 +47,8 @@ namespace M120Projekt
             this.category = category;
             this.workingStatus = category == null ? WorkingStatus.NEW : workingStatus;
             this.entityStatus = category == null ? EntityStatus.UNCHANGED : EntityStatus.MODIFIED;
+            PreName = category.Name;
+            InitializeComponent();
             Initalize();
         }
 
@@ -60,16 +63,21 @@ namespace M120Projekt
 
         private void InitalizeLoadedStatus()
         {
-            LoadValues(category); 
+            LoadValues(category);
         }
 
         private void InitializeNewStatus()
         {
-            this.category = new DAL.Kategorie()
+            this.category = EmptyCategory();
+            LoadValues(category);
+        }
+
+        private DAL.Kategorie EmptyCategory()
+        {
+            return new DAL.Kategorie()
             {
                 Name = ""
-            };
-            LoadValues(category);
+            }; 
         }
 
         private void LoadValues(DAL.Kategorie kategorie)
@@ -80,52 +88,106 @@ namespace M120Projekt
         private void TXTName_TextChanged(object sender, TextChangedEventArgs e)
         {
             category.Name = TXTName.Text;
-            RegexLib.Match(RegexLib.IsCategoryValid, TXTName.Text, TXTName);
+            if (entityStatus == EntityStatus.MODIFIED)
+            {
+                if(category.Name == PreName)
+                {
+                    TXTName.Background = Brushes.White;
+                }
+                else
+                {
+                    RegexLib.Match(RegexLib.IsCategoryValid, TXTName.Text, TXTName);
+                }
+            } 
         }
 
         private void BTNSave_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSelectionValid())
+            if(category.Name == PreName)
             {
-                if (!IsCategoryAvailable())
+                MessageBox.Show("No changes", "Unchanged", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (IsSelectionValid())
+            {
+                if (!BLL.Kategorie.Existiert(TXTName.Text))
                 {
-                    var id = BLL.Kategorie.Erstellen(category);
-                    if(id > 0)
+                    if (entityStatus == EntityStatus.UNATTACHED)
                     {
-                        MessageBox.Show("Category has been created", "Created", MessageBoxButton.OK, MessageBoxImage.Information);
-                        category = BLL.Kategorie.LesenID(id);
+                        var id = BLL.Kategorie.Erstellen(category);
+                        if (id > 0)
+                        {
+                            MessageBox.Show("Category has been created", "Created", MessageBoxButton.OK, MessageBoxImage.Information);
+                            category = BLL.Kategorie.LesenID(id);
+                            parent.UpdateCategoryList();
+                            parent.LoadPasswordListView(category);
+                            entityStatus = EntityStatus.MODIFIED;
+                            workingStatus = WorkingStatus.LOADED;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Some error occurred while creating the category", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }else if(entityStatus == EntityStatus.MODIFIED)
+                    {
+                        BLL.Kategorie.Aktualisieren(category);
+                        var entity = BLL.Kategorie.LesenID(category.KategorieId);
+                        category = entity;
+                        PreName = category.Name;
                         LoadValues(category);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Some error occurred while creating the category", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        parent.UpdateCategoryList();
+                        parent.MainTitle.Content = category.Name;
+                        MessageBox.Show("The category has been updated", "Update", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("The name of the category is already available (make sure your name lowercase && trim is not taken)");
+                    MessageBox.Show("The name of the category is already taken", "Exists", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Please check the content", "Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("The cateory already exists or the content is invalid", "Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void RefreshCategoryList()
+        {
+
+        }
+        private bool IsCurrentName()
+        {
+            return TXTName.Text.Trim().ToLower() == PreName.Trim().ToLower();
         }
 
         private void BTNDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (entityStatus == EntityStatus.MODIFIED)
+            {
+                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (mbr == MessageBoxResult.Yes)
+                {
+                    BLL.Kategorie.LoeschenById(category.KategorieId);
+                    MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
+                }
+            }
+            else
+            {
+                category = EmptyCategory();
+                LoadValues(category);
+                MessageBox.Show("Content has been cleared", "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private bool IsCategoryAvailable()
         {
             var entity = BLL.Kategorie.LesenAlle().FirstOrDefault(i => i.Name.Trim().ToLower() == category.Name.Trim().ToLower());
-            return entity == null ? true : false;
+            return entity != null ? true : false;
         }
 
         private bool IsSelectionValid()
         {
-            return RegexLib.Match(RegexLib.IsCategoryValid, TXTName.Text, TXTName);
+            return RegexLib.Match(RegexLib.IsNameValid, TXTName.Text, TXTName);
         }
     }
 }

@@ -75,8 +75,14 @@ namespace M120Projekt
 
         private void initalize()
         {
+            LoadStartPage();
             ListKateorie.Children.Add(new UC_KategorieList(this));
             MainTitle.Background = Brushes.Gray;
+        }
+
+        private void LoadStartPage()
+        {
+            LoadView(new UC_Startpage(this), "Welcome");
         }
 
         private void UC_KategorieList_Loaded(object sender, RoutedEventArgs e)
@@ -84,9 +90,14 @@ namespace M120Projekt
 
         }
 
+        public void UpdateCategoryList() {
+            ListKateorie.Children.Clear();
+            ListKateorie.Children.Add(new UC_KategorieList(this));
+        }
+
         public void LoadPasswordListView(DAL.Kategorie kategorie)
         {
-            MainTitle.Content = "Password List";
+            MainTitle.Content = kategorie.Name;
             this.mainShowPlace.Children.Clear();
             this.mainShowPlace.Children.Add(new UC_PasswordListView(this, kategorie));
         }
@@ -95,7 +106,15 @@ namespace M120Projekt
         {
             MainTitle.Content = title;
             this.mainShowPlace.Children.Clear();
-            this.mainShowPlace.Children.Add(view);
+            if (view != null)
+            {
+                this.mainShowPlace.Children.Add(view);
+            }
+        }
+
+        private void MenuStartpage_Click(object sender, RoutedEventArgs e)
+        {
+            LoadStartPage();
         }
     }
 }

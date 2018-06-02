@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="M120Projekt.UC_Startpage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:M120Projekt"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Name="main">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Background="WhiteSmoke">
+            <!--<StackPanel  Orientation="Vertical" VerticalAlignment="Center">-->
+                <Image VerticalAlignment="Center" Source="Ressource/Image/logo.png" Height="100"/>
+            <!--</StackPanel>-->
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="0" Margin="10,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="30" FontFamily="Segoe UI Light" BorderThickness="0,0,0,0.5" Padding="0,0,0,1" BorderBrush="Black">
+                Password Manager
+            </Label>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="16" FontFamily="Segoe UI Historic">
+                    Welcome to the password manager<LineBreak/>
+                </TextBlock>
+                <Grid Margin="0,10,0,0" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"  Name="IMGStatus"/>
+                        <Label Grid.Column="1" Name="TXTStatus" FontSize="36" FontFamily="Segoe UI Light">test</Label>
+                    </Grid>
+                    <Grid Margin="0,10,0,0" Name="GridTopArea" Grid.Row="1"></Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

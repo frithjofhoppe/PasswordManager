@@ -84,10 +84,9 @@ namespace M120Projekt
             charedBox.Password = currentPassword.PSW;
         }
 
-        private void InitalizeNewStatus()
+        private DAL.Passwort EmptyPassword()
         {
-
-            currentPassword = new DAL.Passwort()
+            return new DAL.Passwort()
             {
                 Kategorie = BLL.Kategorie.LesenAlle()[0],
                 Eingabedatum = DateTime.Now,
@@ -96,6 +95,12 @@ namespace M120Projekt
                 Zielsystem = "",
                 Login = "",
             };
+        }
+
+        private void InitalizeNewStatus()
+        {
+
+            currentPassword = EmptyPassword();
 
             DATECreationDate.IsEnabled = false;
         }
@@ -182,22 +187,21 @@ namespace M120Projekt
 
         private void BTNDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSelectionValid())
+            if (entityStatus == EntityStatus.MODIFIED)
             {
-                if (entityStatus == EntityStatus.MODIFIED)
+                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (mbr == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the password", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (mbr == MessageBoxResult.Yes)
-                    {
-                        BLL.Passwort.LoeschenById(currentPassword.PasswortId);
-                        MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
-                        parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
-                    }
+                    BLL.Passwort.LoeschenById(currentPassword.PasswortId);
+                    MessageBox.Show("Password has been deleted", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    parent.LoadView(new UC_Password(parent, Additonal.WorkingStatus.NEW), "New password");
                 }
             }
             else
             {
-                MessageBox.Show("Please check the data", "Incorrect values", MessageBoxButton.OK, MessageBoxImage.Stop);
+                currentPassword = EmptyPassword();
+                LoadValues(currentPassword);
+                MessageBox.Show("Content has been cleared", "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

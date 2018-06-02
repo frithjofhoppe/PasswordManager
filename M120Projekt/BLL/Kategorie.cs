@@ -8,6 +8,16 @@ namespace M120Projekt.BLL
 {
     static class Kategorie
     {
+        public static bool Existiert(String name)
+        {
+            using (var context = new DAL.Context())
+            {
+                var catergory = context.Kategorie
+                    .FirstOrDefault(i => i.Name.Trim().ToLower() == name.Trim().ToLower());
+                return catergory != null;
+            }
+        }
+
         public static List<DAL.Kategorie> LesenAlle()
         {
             using (var context = new DAL.Context())
@@ -61,6 +71,20 @@ namespace M120Projekt.BLL
                 context.SaveChanges();
             }
         }
+
+        public static void LoeschenById(long id)
+        {
+            using(var context = new DAL.Context())
+            {
+                var category = context.Kategorie.FirstOrDefault(i => i.KategorieId == id);
+                if(category != null)
+                {
+                    context.Kategorie.Remove(category);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public static void Loeschen(DAL.Kategorie kategorie)
         {
             using (var context = new DAL.Context())

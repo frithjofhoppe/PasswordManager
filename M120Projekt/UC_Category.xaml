@@ -18,9 +18,9 @@
             <Button Name="BTNSave" Click="BTNSave_Click" ToolBar.OverflowMode="Never" >
                 <Image Source="Ressource/Image/save.png"/>
             </Button>
-            <Button Name="BTNDelete" Click="BTNDelete_Click"  ToolBar.OverflowMode="Never">
+            <!--<Button Name="BTNDelete" Click="BTNDelete_Click"  ToolBar.OverflowMode="Never">
                 <Image Source="Ressource/Image/delete.png"/>
-            </Button>
+            </Button>-->
         </ToolBar>
         <StackPanel Name="PanelAttributes" Grid.Column="0" Grid.Row="1">
             <WrapPanel>

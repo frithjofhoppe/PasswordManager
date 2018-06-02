@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:M120Projekt"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStyle="ToolWindow">
+        Icon="Ressource/Image/logoico.ico"
+        Title="Password manager" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -15,16 +16,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <Menu DockPanel.Dock="Top" Height="20">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_New" />
-                    <MenuItem Header="_Open" />
-                    <MenuItem Header="_Save" />
-                    <Separator />
-                    <MenuItem Header="_Exit" />
-                </MenuItem>
-            </Menu>
-            <TextBox AcceptsReturn="True" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Menu Grid.Column="0" DockPanel.Dock="Top" Height="auto">
+                    <MenuItem Header="Menu">
+                        <MenuItem Header="_Startpage" Name="MenuStartpage" Click="MenuStartpage_Click"/>
+                        <MenuItem Header="_About" />
+                        <Separator />
+                        <MenuItem Header="_Exit" />
+                    </MenuItem>
+                </Menu>
+            </Grid>
         </DockPanel>
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid>
@@ -48,7 +52,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Label Margin="2,2,1.6,2.4" Grid.Row="0" Name="MainTitle" Grid.ColumnSpan="2"/>
-                    <StackPanel Name="mainShowPlace" Grid.ColumnSpan="2" Margin="0,30,-0.4,0.2" Grid.RowSpan="2"/>
+                    <Grid Name="mainShowPlace" Grid.ColumnSpan="2" Margin="0,30,-0.4,0.2" Grid.RowSpan="2"/>
                 </Grid>
             </Grid>
         </Grid>

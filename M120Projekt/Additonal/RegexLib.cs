@@ -29,9 +29,9 @@ namespace M120Projekt.Additonal
                 toReturn = false;
             }
 
-            var category = BLL.Kategorie.LesenAlle().FirstOrDefault(i => i.Name.Trim().ToLower() == input.Trim().ToLower());
+            var category = BLL.Kategorie.Existiert(input);
 
-            return category == null && toReturn;
+            return !category && toReturn;
         }
 
         public static bool IsPasswordValid(string input)

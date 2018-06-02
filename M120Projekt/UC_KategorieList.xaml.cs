@@ -21,6 +21,7 @@ namespace M120Projekt
     public partial class UC_KategorieList : UserControl
     {
         MainWindow parent;
+        DAL.Kategorie category;
 
         public UC_KategorieList()
         {
@@ -56,12 +57,30 @@ namespace M120Projekt
 
         private void BTNDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (category != null)
+            {
+                MessageBoxResult mbr = MessageBox.Show("Do you realy want to delete the category'" + category.Name + "'", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (mbr == MessageBoxResult.Yes)
+                {
+                    BLL.Kategorie.LoeschenById(category.KategorieId);
+                    MessageBox.Show("Category has been deleted the category", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                    parent.UpdateCategoryList();
+                    parent.LoadView(null, "");
+                }
+            }
         }
 
         private void BTNEdit_Click(object sender, RoutedEventArgs e)
         {
+            if (category != null)
+            {
+                parent.LoadView(new UC_Category(parent, category, Additonal.WorkingStatus.LOADED), category.Name);
+            }
+        }
 
+        private void ListKategorie_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            category = (DAL.Kategorie)(((DataGrid)sender).SelectedItem);
         }
     }
 }

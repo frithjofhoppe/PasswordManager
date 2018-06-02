@@ -9,6 +9,27 @@ namespace M120Projekt.BLL
 {
     static class Passwort
     {
+        public static int IstAbgelaufen()
+        {
+            using (var context = new DAL.Context())
+            {
+                return context.Passwort
+                    .Where(i => i.Ablaufdatum <= DateTime.Today)
+                    .Count();
+            }
+        }
+
+        public static List<DAL.Passwort> LesenAlleAbgelaufen()
+        {
+            using (var context = new DAL.Context())
+            {
+                return context.Passwort
+                    .Include(i => i.Kategorie)
+                    .Where(i => i.Ablaufdatum <= DateTime.Today)
+                    .ToList();
+            }
+        }
+
         public static List<DAL.Passwort> LesenAlle()
         {
             using (var context = new DAL.Context())
