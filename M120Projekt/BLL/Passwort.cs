@@ -149,7 +149,7 @@ namespace M120Projekt.BLL
         {
             using (var context = new DAL.Context())
             {
-                context.Entry(passwort).State = System.Data.Entity.EntityState.Unchanged;
+                context.Entry(passwort).State = System.Data.Entity.EntityState.Deleted;
                 context.Passwort.Remove(passwort);
                 context.SaveChanges();
             }

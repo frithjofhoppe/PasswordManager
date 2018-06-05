@@ -85,11 +85,6 @@ namespace M120Projekt
             LoadView(new UC_Startpage(this), "Welcome");
         }
 
-        private void UC_KategorieList_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         public void UpdateCategoryList() {
             ListKateorie.Children.Clear();
             ListKateorie.Children.Add(new UC_KategorieList(this));
@@ -119,17 +114,22 @@ namespace M120Projekt
 
         private void MenutExit_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            CloseDialog();
+        }
+
+        private void CloseDialog()
+        {
+            MessageBoxResult mbr = MessageBox.Show("Do you want to quit?", "Closing", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbr == MessageBoxResult.Yes)
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            MessageBoxResult mbr = MessageBox.Show("Do you want to quit?", "Closing", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if(mbr == MessageBoxResult.Yes)
-            {              
-                Environment.Exit(0);
-            }
+            CloseDialog();
         }
     }
 }

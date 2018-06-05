@@ -147,16 +147,6 @@ namespace M120Projekt
             this.parent = parent;
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-
-        }
-
         private void BTNSave_Click(object sender, RoutedEventArgs e)
         {
             if (IsSelectionValid())

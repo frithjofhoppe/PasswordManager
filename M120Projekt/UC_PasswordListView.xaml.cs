@@ -104,5 +104,13 @@ namespace M120Projekt
                 ListPasswords.ItemsSource = BLL.Passwort.LesenFremdschluesselGleich(currentCategory);
             }
         }
+
+        private void ListPasswords_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (((DAL.Passwort)(e.Row.DataContext)).Abgelaufen)
+            {
+                e.Row.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#efce4a"));
+            }
+        }
     }
 }

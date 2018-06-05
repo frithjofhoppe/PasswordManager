@@ -46,13 +46,7 @@ namespace M120Projekt.BLL
                 return (from record in context.Kategorie where record.Name.Contains(suchbegriff) select record).ToList();
             }
         }
-        //public static List<DAL.ClassB> LesenFremdschluesselGleich(DAL.ClassA suchschluessel)
-        //{
-        //    using (var context = new DAL.Context())
-        //    {
-        //        return (from record in context.ClassA where record.FremdschluesselAttribut == suchschluessel select record).ToList();
-        //    }
-        //}
+
         public static Int64 Erstellen(DAL.Kategorie kategorie)
         {
             if (kategorie.Name == null || kategorie.Name == "") kategorie.Name = "leer";

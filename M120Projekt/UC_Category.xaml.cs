@@ -150,10 +150,6 @@ namespace M120Projekt
             }
         }
 
-        private void RefreshCategoryList()
-        {
-
-        }
         private bool IsCurrentName()
         {
             return TXTName.Text.Trim().ToLower() == PreName.Trim().ToLower();
