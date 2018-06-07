@@ -24,11 +24,11 @@ namespace M120Projekt
         public MainWindow()
         {
             InitializeComponent();
-            if(BLL.Passwort.LesenAlle().Count == 0 && BLL.Kategorie.LesenAlle().Count == 0)
-            {
-                DemoErstellen();
-            }
-            DemoAbfragen();
+            //if(BLL.Passwort.LesenAlle().Count == 0 && BLL.Kategorie.LesenAlle().Count == 0)
+            //{
+            //    DemoErstellen();
+            //}
+            //DemoAbfragen();
             initalize();
         }
         #region Demo

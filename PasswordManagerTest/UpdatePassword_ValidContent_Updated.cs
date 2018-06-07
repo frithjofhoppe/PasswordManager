@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Windows.Forms;
+using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Input;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
-using Microsoft.VisualStudio.TestTools.UITesting.DirectUIControls;
-using Microsoft.VisualStudio.TestTools.UITesting.WindowsRuntimeControls;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 
 
-namespace PasswordmanagerTest
+namespace PasswordManagerTest
 {
     /// <summary>
-    /// Summary description for CodedUITest1
+    /// Summary description for UpdatePassword_ValidContent_Updated
     /// </summary>
-    [CodedUITest(CodedUITestType.WindowsStore)]
-    public class CodedUITest1
+    [CodedUITest]
+    public class UpdatePassword_ValidContent_Updated
     {
-        public CodedUITest1()
+        public UpdatePassword_ValidContent_Updated()
         {
         }
 
@@ -25,6 +26,25 @@ namespace PasswordmanagerTest
         public void CodedUITestMethod1()
         {
             // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
+
+            this.UIMap.OpenApplication();
+            this.UIMap.CreateTestCategory();
+            this.UIMap.CreatePassword();
+            this.UIMap.AssertPasswordCreated();
+            this.UIMap.GoBackToList();
+            this.UIMap.AssertRowCount();
+            this.UIMap.AssertCreatedPasswordIdentifier();
+            this.UIMap.SearchAfterIdentifier();
+
+
+
+            this.UIMap.AssertPasswordChanged();
+
+            this.UIMap.MakePasswordVisible();
+
+            this.UIMap.UpdatePassword();
+
+           
         }
 
         #region Additional test attributes

@@ -88,8 +88,8 @@ namespace M120Projekt
         private void TXTName_TextChanged(object sender, TextChangedEventArgs e)
         {
             category.Name = TXTName.Text;
-            if (entityStatus == EntityStatus.MODIFIED)
-            {
+            //if (entityStatus == EntityStatus.MODIFIED)
+            //{
                 if(category.Name == PreName)
                 {
                     TXTName.Background = Brushes.White;
@@ -98,7 +98,7 @@ namespace M120Projekt
                 {
                     RegexLib.Match(RegexLib.IsCategoryValid, TXTName.Text, TXTName);
                 }
-            } 
+            //} 
         }
 
         private void BTNSave_Click(object sender, RoutedEventArgs e)

@@ -37,6 +37,7 @@ namespace M120Projekt
         public UC_Password(MainWindow parent, WorkingStatus workingStatus)
         {
             InitializeComponent();
+            BTNBack.Visibility = Visibility.Hidden;
             this.parent = parent;
             this.workingStatus = workingStatus;
             this.entityStatus = EntityStatus.UNATTACHED;
@@ -47,6 +48,7 @@ namespace M120Projekt
         public UC_Password(MainWindow parent, DAL.Passwort password, WorkingStatus workingStatus)
         {
             InitializeComponent();
+            BTNBack.Visibility = Visibility.Hidden;
             this.parent = parent;
             this.workingStatus = password == null ? WorkingStatus.NEW : workingStatus;
             this.entityStatus = password == null ? EntityStatus.UNATTACHED : EntityStatus.MODIFIED;
@@ -110,6 +112,7 @@ namespace M120Projekt
             CMBCategory.IsEnabled = true;
             DATECreationDate.IsEnabled = false;
             DATEExpirationDate.DisplayDateStart = DATECreationDate.SelectedDate.Value.Date.AddDays(1);
+            BTNBack.Visibility = Visibility.Visible;
         }
 
         private void LoadValues(DAL.Passwort pw)
@@ -166,6 +169,7 @@ namespace M120Projekt
                         currentPassword = BLL.Passwort.LesenID(id);
                         LoadValues(currentPassword);
                         entityStatus = EntityStatus.MODIFIED;
+                        BTNBack.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -261,6 +265,11 @@ namespace M120Projekt
                 RegexLib.Match(RegexLib.IsNameValid, TXTName.Text, TXTName) &&
                 RegexLib.Match(RegexLib.IsPasswordValid, TXTPasswordClear.Text, TXTPasswordClear) &&
                 DATEExpirationDate.SelectedDate.Value.Date > DateTime.Today;
+        }
+
+        private void BTNBack_Click(object sender, RoutedEventArgs e)
+        {
+            parent.LoadView(new UC_PasswordListView(parent, currentPassword.Kategorie), currentPassword.Kategorie.Name);
         }
     }
 

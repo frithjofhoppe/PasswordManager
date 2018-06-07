@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M120Projekt", "M120Projekt\M120Projekt.csproj", "{D919A030-A9C6-4639-80D6-5022FDC55913}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordManagerTest", "PasswordManagerTest\PasswordManagerTest.csproj", "{B9687FF0-EF86-4EA9-9544-FD3DC3B255D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D919A030-A9C6-4639-80D6-5022FDC55913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D919A030-A9C6-4639-80D6-5022FDC55913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D919A030-A9C6-4639-80D6-5022FDC55913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9687FF0-EF86-4EA9-9544-FD3DC3B255D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9687FF0-EF86-4EA9-9544-FD3DC3B255D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9687FF0-EF86-4EA9-9544-FD3DC3B255D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9687FF0-EF86-4EA9-9544-FD3DC3B255D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

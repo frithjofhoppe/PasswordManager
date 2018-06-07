@@ -59,7 +59,10 @@ namespace M120Projekt
 
         private void ListPasswords_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            parent.LoadView(new UC_Password(parent, currentPassword, Additonal.WorkingStatus.LOADED), "Edit password");
+            if (currentPassword != null)
+            {
+                parent.LoadView(new UC_Password(parent, currentPassword, Additonal.WorkingStatus.LOADED), "Edit password");
+            }
         }
 
         private void ListPasswords_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
