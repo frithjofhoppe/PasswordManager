@@ -13,20 +13,18 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 namespace PasswordManagerTest
 {
     /// <summary>
-    /// Summary description for UpdatePassword_ValidContent_Updated
+    /// Summary description for SerachPassword_InvalidIdentifier_NotFound
     /// </summary>
     [CodedUITest]
-    public class UpdatePassword_ValidContent_Updated
+    public class SerachPassword_InvalidIdentifier_NotFound
     {
-        public UpdatePassword_ValidContent_Updated()
+        public SerachPassword_InvalidIdentifier_NotFound()
         {
         }
 
         [TestMethod]
         public void CodedUITestMethod1()
         {
-            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
-
             this.UIMap.OpenApplication();
             this.UIMap.CreateTestCategory();
             this.UIMap.CreatePassword();
@@ -34,18 +32,11 @@ namespace PasswordManagerTest
             this.UIMap.GoBackToList();
             this.UIMap.AssertRowCount();
             this.UIMap.AssertCreatedPasswordIdentifier();
-            this.UIMap.SearchAfterIdentifier();
-            this.UIMap.GoToPassword();
-            this.UIMap.MakePasswordVisible();
-            this.UIMap.UpdatePassword();
-            this.UIMap.GoToPassword();
-            this.UIMap.AssertPasswordChanged();
+            this.UIMap.SearchAfterNotExistingIdentifier();
+            this.UIMap.AssertIdentifierNotFound();
             this.UIMap.DeleteCategory();
             this.UIMap.CloseApplication();
-
-            
-
-           
+            // To generate code for this test, select "Generate Code for Coded UI Test" from the shortcut menu and select one of the menu items.
         }
 
         #region Additional test attributes

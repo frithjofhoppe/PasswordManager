@@ -42,7 +42,33 @@ namespace PasswordManagerTest
             // Double-Click 'Name' text box
             Mouse.DoubleClick(uINameEdit, new Point(60, 7));
         }
-        
+
+
+        // <summary>
+        /// AssertCreatedPasswordIdentifier - Use 'AssertCreatedPasswordIdentifierExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void GoToPassword()
+        {
+            #region Variable Declarations
+            WpfText uIIdentyText = this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable.UIItem10026Row.UIIdentyCell.UIIdentyText;
+            WpfCell uIIdentyCell = this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable.UIItem10026Row.UIIdentyCell;
+            #endregion
+
+            //// Verify that the 'DisplayText' property of 'identy' label equals 'identy'
+            //Assert.AreEqual(this.AssertCreatedPasswordIdentifierExpectedValues.UIIdentyTextDisplayText, uIIdentyText.DisplayText);
+
+            //// Verify that the 'FriendlyName' property of 'identy' cell equals 'identy'
+            //Assert.AreEqual(this.AssertCreatedPasswordIdentifierExpectedValues.UIIdentyCellFriendlyName, uIIdentyCell.FriendlyName);
+
+            this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable.Find();
+
+            var cell = new WpfCell(this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable);
+            cell.SearchProperties.Add(WpfCell.PropertyNames.RowIndex, (0).ToString());
+            cell.SearchProperties.Add(WpfCell.PropertyNames.ColumnIndex, (0).ToString());
+            cell.Find();
+            Mouse.DoubleClick(cell);
+        }
+
         /// <summary>
         /// CreateTestCategory - Use 'CreateTestCategoryParams' to pass parameters into this method.
         /// </summary>
@@ -163,9 +189,13 @@ namespace PasswordManagerTest
 
             //// Verify that the 'FriendlyName' property of 'identy' cell equals 'identy'
             //Assert.AreEqual(this.AssertCreatedPasswordIdentifierExpectedValues.UIIdentyCellFriendlyName, uIIdentyCell.FriendlyName);
+
+            this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable.Find();
+
             var cell = new WpfCell(this.UIPasswordmanagerWindow.UIItemCustom2.UIListPasswordsTable);
             cell.SearchProperties.Add(WpfCell.PropertyNames.RowIndex, (0).ToString());
             cell.SearchProperties.Add(WpfCell.PropertyNames.ColumnIndex, (0).ToString());
+            cell.Find();
             Assert.AreEqual(cell.Value, "identy");
         }
         
@@ -182,16 +212,13 @@ namespace PasswordManagerTest
             WinButton uIOKButton = this.UIDeletedWindow.UIOKWindow.UIOKButton;
             #endregion
 
+            this.UIPasswordmanagerWindow.UIItemCustom.UIListKategorieTable.Find();
 
             var cell = new WpfCell(this.UIPasswordmanagerWindow.UIItemCustom.UIListKategorieTable);
             cell.SearchProperties.Add(WpfCell.PropertyNames.RowIndex, (0).ToString());
             cell.SearchProperties.Add(WpfCell.PropertyNames.ColumnIndex, (0).ToString());
-            Mouse.Click(cell);
-            //// Click 'Category' label
-            //Mouse.Click(uICategoryText, new Point(39, 13));
-
-            //// Click 'TestCategory' label
-            //Mouse.Click(uITestCategoryText, new Point(34, 3));
+            cell.Find();
+            Mouse.DoubleClick(cell);
 
             // Click 'BTNDelete' button
             Mouse.Click(uIBTNDeleteButton, new Point(7, 6));
@@ -201,8 +228,6 @@ namespace PasswordManagerTest
 
             // Click 'OK' button
             Mouse.Click(uIOKButton, new Point(58, 13));
-
-           
         }
         
         /// <summary>
@@ -256,17 +281,23 @@ namespace PasswordManagerTest
             WpfButton uIBTNBackButton = this.UIPasswordmanagerWindow.UIItemCustom11.UIItemToolBar.UIBTNBackButton;
             #endregion
 
-            //// Click 'BTNChangePasswordMode' button
-            //Mouse.Click(uIBTNChangePasswordModButton, new Point(14, 9));
+           
 
             // Type 'testX12345$' in 'TXTPasswordClear' text box
             uITXTPasswordClearEdit.Text = this.UpdatePasswordParams.UITXTPasswordClearEditText;
 
+            uIBTNSaveButton.Find();
+
+
             // Click 'BTNSave' button
             Mouse.Click(uIBTNSaveButton, new Point(17, 17));
 
+            uIOKButton.Find();
+
             // Click 'OK' button
             Mouse.Click(uIOKButton, new Point(50, 10));
+
+            uIBTNBackButton.Find();
 
             // Click 'BTNBack' button
             Mouse.Click(uIBTNBackButton, new Point(15, 11));
@@ -296,6 +327,36 @@ namespace PasswordManagerTest
 
             // Verify that the 'Text' property of 'TXTPasswordClear' text box equals 'testX12345$'
             Assert.AreEqual(this.AssertPasswordChangedExpectedValues.UITXTPasswordClearEditText, uITXTPasswordClearEdit.Text);
+        }
+        
+        /// <summary>
+        /// SearchAfterNotExistingIdentifier - Use 'SearchAfterNotExistingIdentifierParams' to pass parameters into this method.
+        /// </summary>
+        public void SearchAfterNotExistingIdentifier()
+        {
+            #region Variable Declarations
+            WpfComboBox uICMBSeachCategoryComboBox = this.UIPasswordmanagerWindow.UIItemCustom2.UIItemToolBar.UICMBSeachCategoryComboBox;
+            WpfEdit uITXTSearchTermEdit = this.UIPasswordmanagerWindow.UIItemCustom2.UIItemToolBar.UITXTSearchTermEdit;
+            #endregion
+
+            // Select 'Identifier' in 'CMBSeachCategory' combo box
+            uICMBSeachCategoryComboBox.SelectedItem = this.SearchAfterNotExistingIdentifierParams.UICMBSeachCategoryComboBoxSelectedItem;
+
+            // Type 'hghgh' in 'TXTSearchTerm' text box
+            uITXTSearchTermEdit.Text = this.SearchAfterNotExistingIdentifierParams.UITXTSearchTermEditText;
+        }
+        
+        /// <summary>
+        /// AssertIdentifierNotFound - Use 'AssertIdentifierNotFoundExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertIdentifierNotFound()
+        {
+            #region Variable Declarations
+            WpfText uINomatchesText1 = this.UIPasswordmanagerWindow.UIItemCustom2.UINomatchesText.UINomatchesText1;
+            #endregion
+
+            // Verify that the 'DisplayText' property of 'No matches' label equals 'No matches'
+            Assert.AreEqual(this.AssertIdentifierNotFoundExpectedValues.UINomatchesText1DisplayText, uINomatchesText1.DisplayText);
         }
         
         #region Properties
@@ -392,6 +453,30 @@ namespace PasswordManagerTest
                     this.mAssertPasswordChangedExpectedValues = new AssertPasswordChangedExpectedValues();
                 }
                 return this.mAssertPasswordChangedExpectedValues;
+            }
+        }
+        
+        public virtual SearchAfterNotExistingIdentifierParams SearchAfterNotExistingIdentifierParams
+        {
+            get
+            {
+                if ((this.mSearchAfterNotExistingIdentifierParams == null))
+                {
+                    this.mSearchAfterNotExistingIdentifierParams = new SearchAfterNotExistingIdentifierParams();
+                }
+                return this.mSearchAfterNotExistingIdentifierParams;
+            }
+        }
+        
+        public virtual AssertIdentifierNotFoundExpectedValues AssertIdentifierNotFoundExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertIdentifierNotFoundExpectedValues == null))
+                {
+                    this.mAssertIdentifierNotFoundExpectedValues = new AssertIdentifierNotFoundExpectedValues();
+                }
+                return this.mAssertIdentifierNotFoundExpectedValues;
             }
         }
         
@@ -508,6 +593,10 @@ namespace PasswordManagerTest
         private UpdatePasswordParams mUpdatePasswordParams;
         
         private AssertPasswordChangedExpectedValues mAssertPasswordChangedExpectedValues;
+        
+        private SearchAfterNotExistingIdentifierParams mSearchAfterNotExistingIdentifierParams;
+        
+        private AssertIdentifierNotFoundExpectedValues mAssertIdentifierNotFoundExpectedValues;
         
         private UIDebugWindow mUIDebugWindow;
         
@@ -669,6 +758,41 @@ namespace PasswordManagerTest
         /// Verify that the 'Text' property of 'TXTPasswordClear' text box equals 'testX12345$'
         /// </summary>
         public string UITXTPasswordClearEditText = "testX12345$";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'SearchAfterNotExistingIdentifier'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SearchAfterNotExistingIdentifierParams
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Select 'Identifier' in 'CMBSeachCategory' combo box
+        /// </summary>
+        public string UICMBSeachCategoryComboBoxSelectedItem = "Identifier";
+        
+        /// <summary>
+        /// Type 'hghgh' in 'TXTSearchTerm' text box
+        /// </summary>
+        public string UITXTSearchTermEditText = "hghgh";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertIdentifierNotFound'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class AssertIdentifierNotFoundExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'DisplayText' property of 'No matches' label equals 'No matches'
+        /// </summary>
+        public string UINomatchesText1DisplayText = "No matches";
         #endregion
     }
     
@@ -1323,12 +1447,26 @@ namespace PasswordManagerTest
                 return this.mUIListPasswordsTable;
             }
         }
+        
+        public UINomatchesText UINomatchesText
+        {
+            get
+            {
+                if ((this.mUINomatchesText == null))
+                {
+                    this.mUINomatchesText = new UINomatchesText(this);
+                }
+                return this.mUINomatchesText;
+            }
+        }
         #endregion
         
         #region Fields
         private UIItemToolBar2 mUIItemToolBar;
         
         private UIListPasswordsTable mUIListPasswordsTable;
+        
+        private UINomatchesText mUINomatchesText;
         #endregion
     }
     
@@ -1519,6 +1657,43 @@ namespace PasswordManagerTest
         
         #region Fields
         private WpfText mUIIdentyText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UINomatchesText : WpfText
+    {
+        
+        public UINomatchesText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "LBLSearchResult";
+            this.WindowTitles.Add("Password manager");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UINomatchesText1
+        {
+            get
+            {
+                if ((this.mUINomatchesText1 == null))
+                {
+                    this.mUINomatchesText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUINomatchesText1.SearchProperties[WpfText.PropertyNames.Name] = "No matches";
+                    this.mUINomatchesText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUINomatchesText1.WindowTitles.Add("Password manager");
+                    #endregion
+                }
+                return this.mUINomatchesText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUINomatchesText1;
         #endregion
     }
     
