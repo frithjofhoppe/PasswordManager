@@ -101,10 +101,30 @@ namespace M120Projekt
                     case "Identifier": ListPasswords.ItemsSource = BLL.Passwort.ZielsystemWie(searchTerm, currentCategory.KategorieId) ; break;
                     case "Username": ListPasswords.ItemsSource = BLL.Passwort.BenutzerWie(searchTerm, currentCategory.KategorieId); break;
                 }
+
+                switch (ListPasswords.Items.Count)
+                {
+                    case 0: LBLSearchResult.Content = "No matches"; SetResult(false) ; break;
+                    case 1: LBLSearchResult.Content = "1 match"; SetResult(true) ; break;
+                    default: LBLSearchResult.Content = ListPasswords.Items.Count + " machtches"; SetResult(true) ; break;
+                }
             }
             else if(TXTSearchTerm.Text.Trim().Length == 0)
             {
+                LBLSearchResult.Content = "";
                 ListPasswords.ItemsSource = BLL.Passwort.LesenFremdschluesselGleich(currentCategory);
+            }
+        }
+
+        private void SetResult(bool status)
+        {
+            if (status)
+            {
+                LBLSearchResult.Foreground = Brushes.Green;
+            }
+            else
+            {
+                LBLSearchResult.Foreground = Brushes.Red;
             }
         }
 

@@ -256,8 +256,8 @@ namespace PasswordManagerTest
             WpfButton uIBTNBackButton = this.UIPasswordmanagerWindow.UIItemCustom11.UIItemToolBar.UIBTNBackButton;
             #endregion
 
-            // Click 'BTNChangePasswordMode' button
-            Mouse.Click(uIBTNChangePasswordModButton, new Point(14, 9));
+            //// Click 'BTNChangePasswordMode' button
+            //Mouse.Click(uIBTNChangePasswordModButton, new Point(14, 9));
 
             // Type 'testX12345$' in 'TXTPasswordClear' text box
             uITXTPasswordClearEdit.Text = this.UpdatePasswordParams.UITXTPasswordClearEditText;
